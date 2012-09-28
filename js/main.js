@@ -95,7 +95,7 @@ var bumpMapping = (function(){
 
 
     //
-    // REAL SHIT IS HERE, THE CODES ABOVE ARE MAINLY FOR THE PRELOADING AND THE TRANSITION OF THE INFO BOX
+    // REAL SHIT IS HERE
     //---------------------------
     function _initCanvas(){
 
@@ -108,7 +108,7 @@ var bumpMapping = (function(){
         tmp2d.drawImage(EKLoader.get(_diffuseUrl).source, 0, 0);
         _duffuse = tmp2d.getImageData(0, 0, WIDTH, HEIGHT).data;
         tmp2d.drawImage(EKLoader.get(_normalUrl).source, 0, 0);
-        tmp = tmp2d.getImageData(0, 0, WIDTH, HEIGHT).data;
+        var tmp = tmp2d.getImageData(0, 0, WIDTH, HEIGHT).data;
         _normal = [];
         for(var i = 0; i < WIDTH*HEIGHT*4; i+=4) {
             _normal.push(tmp[i]*2-255);
@@ -137,23 +137,17 @@ var bumpMapping = (function(){
         _py = e.pageY - (window.innerHeight - HEIGHT >> 1);
     }
 
-    // Stole it from: https://github.com/millermedeiros/amd-utils/blob/master/src/math/clamp.js
     function _clamp(val, min, max) {
         return val < min? min : (val > max? max : val);
     }
 
     function _render(){
-        // add simple easing for the x,y point changing
-        _ptx += ((_px < 0 ? 0 : _px > WIDTH ? WIDTH : _px) - _ptx) *.08;
-        _pty += ((_py < 0 ? 0 : _py > HEIGHT ? HEIGHT : _py) - _pty) *.08;
+
+        _ptx += ((_px < 0 ? 0 : _px > WIDTH ? WIDTH : _px) - _ptx) *.05;
+        _pty += ((_py < 0 ? 0 : _py > HEIGHT ? HEIGHT : _py) - _pty) *.05;
 
         var x = WIDTH;
         var y;
-
-        // make sure they are integer
-        var rptx = _ptx >> 0;
-        var rpty = _pty >> 0;
-
         var p;
         var length;
         var intensity;
@@ -161,10 +155,10 @@ var bumpMapping = (function(){
         var unitNormal;
         var normalFactor;
         var dx,dy,dz;
-        var l = rptx-RADIUS<0?0:rptx-RADIUS;
-        var r = rptx+RADIUS>WIDTH?WIDTH:rptx+RADIUS;
-        var t = rpty-RADIUS<0?0:rpty-RADIUS;
-        var b = rpty+RADIUS>HEIGHT?HEIGHT:rpty+RADIUS;
+        var l = _ptx-RADIUS<0?0:_ptx-RADIUS;
+        var r = _ptx+RADIUS>WIDTH?WIDTH:_ptx+RADIUS;
+        var t = _pty-RADIUS<0?0:_pty-RADIUS;
+        var b = _pty+RADIUS>HEIGHT?HEIGHT:_pty+RADIUS;
         while(x--){
             y = HEIGHT;
             while(y--){
@@ -174,8 +168,8 @@ var bumpMapping = (function(){
                     _cacheData[p+1] = 0;
                     _cacheData[p+2] = 0;
                 }else{
-                    dx = rptx-x;
-                    dy = rpty-y;
+                    dx = _ptx-x;
+                    dy = _pty-y;
                     dz = MOUSEZ;
                     length = dx*dx+dy*dy;
                     inv = 1/Math.sqrt(length+MOUSEZ2);
