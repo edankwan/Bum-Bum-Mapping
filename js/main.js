@@ -16,7 +16,7 @@ var bumpMapping = (function(){
     var _infoHeight;
 
     var _normal;
-    var _duffuse;
+    var _diffuse;
     var _cache;
     var _cacheData;
 
@@ -105,9 +105,9 @@ var bumpMapping = (function(){
         tmp2d = tmp.getContext("2d");
         tmp.width = WIDTH;
         tmp.height = HEIGHT;
-        tmp2d.drawImage(EKLoader.get(_diffuseUrl).source, 0, 0);
-        _duffuse = tmp2d.getImageData(0, 0, WIDTH, HEIGHT).data;
-        tmp2d.drawImage(EKLoader.get(_normalUrl).source, 0, 0);
+        tmp2d.drawImage(window.__img_diffuse, 0, 0);
+        _diffuse = tmp2d.getImageData(0, 0, WIDTH, HEIGHT).data;
+        tmp2d.drawImage(window.__img_normal, 0, 0);
         var tmp = tmp2d.getImageData(0, 0, WIDTH, HEIGHT).data;
         _normal = [];
         for(var i = 0; i < WIDTH*HEIGHT*4; i+=4) {
@@ -178,9 +178,9 @@ var bumpMapping = (function(){
                     dz*=inv;
                     intensity = _clamp((RADIUS-Math.sqrt(length))/40000,0,1);
                     normalFactor = _normal[p]*intensity*dx+_normal[p+1]*intensity*dy+_normal[p+2]*intensity*dz;
-                    _cacheData[p] = _clamp(_duffuse[p] * normalFactor, 0, 255);
-                    _cacheData[p+1] = _clamp(_duffuse[p+1] * normalFactor, 0, 255);
-                    _cacheData[p+2] = _clamp(_duffuse[p+2] * normalFactor, 0, 255);
+                    _cacheData[p] = _clamp(_diffuse[p] * normalFactor, 0, 255);
+                    _cacheData[p+1] = _clamp(_diffuse[p+1] * normalFactor, 0, 255);
+                    _cacheData[p+2] = _clamp(_diffuse[p+2] * normalFactor, 0, 255);
                 }
             }
 
