@@ -125,9 +125,9 @@ var bumpMapping = (function(){
     }
     function _initEvents() {
         if("ontouchstart" in window) {
-            document.addEventListener("touchmove", function(e){_onInputMove(e.touches[0]);});
+            window.addEventListener("touchmove", function(e){_onInputMove(e.touches[0]);});
         } else {
-            document.addEventListener("mousemove", _onInputMove);
+            window.addEventListener("mousemove", _onInputMove);
         }
         setInterval(_render, 1000/60);
     }
